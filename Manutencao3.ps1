@@ -115,10 +115,10 @@ function Collect-SystemInfo {
         $formattedUptime = Get-Date $uptime -Format "yyyy-MM-dd HH:mm:ss"
 
         $reportContent = @"
-<h2>Relatório de Manutenção do Sistema</h2><br>
+<h4>Relatório de Manutenção do Sistema</h4><br>
 Data e Hora de Execução: $executionDateTime<br>
 <br>
-<h2>Informações do Sistema</h2><br>
+<h4>Informações do Sistema</h4><br>
 Nome da Máquina: $computerName<br>
 Usuário: $userName<br>
 Endereço IP: $($ipAddresses -join ', ')<br>
@@ -151,10 +151,10 @@ function Collect-Profiles {
             }
             $profileDetails = $profileList -join "<br>"
             if (![string]::IsNullOrEmpty($ReportPath)) {
-                Add-Content -Path $ReportPath -Value "<br><h2>Perfis de Usuário</h2><br>$profileDetails" -Encoding UTF8
+                Add-Content -Path $ReportPath -Value "<br><h4>Perfis de Usuário</h4><br>$profileDetails" -Encoding UTF8
             }
         } else {
-            Add-Content -Path $ReportPath -Value "<br><h2>Perfis de Usuário</h2><br>Nenhum perfil encontrado." -Encoding UTF8
+            Add-Content -Path $ReportPath -Value "<br><h4>Perfis de Usuário</h4><br>Nenhum perfil encontrado." -Encoding UTF8
         }
     } -TimeoutSeconds 300 -ReportPath $ReportPath
 }
@@ -176,13 +176,13 @@ function Check-SystemIntegrity {
                 }
                 $formattedErrors = $errorDetails -join "<br>"
                 if (![string]::IsNullOrEmpty($ReportPath)) {
-                    Add-Content -Path $ReportPath -Value "<br><h2>Integridade do Sistema (Últimos 10 Eventos)</h2><br>$formattedErrors" -Encoding UTF8
+                    Add-Content -Path $ReportPath -Value "<br><h4>Integridade do Sistema (Últimos 10 Eventos)</h4><br>$formattedErrors" -Encoding UTF8
                 }
             } else {
-                Add-Content -Path $ReportPath -Value "<br><h2>Integridade do Sistema</h2><br>Nenhum erro crítico encontrado." -Encoding UTF8
+                Add-Content -Path $ReportPath -Value "<br><h4>Integridade do Sistema</h4><br>Nenhum erro crítico encontrado." -Encoding UTF8
             }
         } catch {
-            Add-Content -Path $ReportPath -Value "<br><h2>Integridade do Sistema</h2><br>Erro ao verificar integridade do sistema." -Encoding UTF8
+            Add-Content -Path $ReportPath -Value "<br><h4>Integridade do Sistema</h4><br>Erro ao verificar integridade do sistema." -Encoding UTF8
         }
     } -TimeoutSeconds 300 -ReportPath $ReportPath
 }
@@ -207,10 +207,10 @@ function Check-Security {
 
             $securityDetails = "Antivírus: $($antivirusStatus.displayName), Status: $($antivirusStatus.productState)<br>$firewallFormatted"
             if (![string]::IsNullOrEmpty($ReportPath)) {
-                Add-Content -Path $ReportPath -Value "<br><h2>Verificação de Segurança</h2><br>$securityDetails" -Encoding UTF8
+                Add-Content -Path $ReportPath -Value "<br><h4>Verificação de Segurança</h4><br>$securityDetails" -Encoding UTF8
             }
         } catch {
-            Add-Content -Path $ReportPath -Value "<br><h2>Verificação de Segurança</h2><br>Erro ao verificar segurança do sistema." -Encoding UTF8
+            Add-Content -Path $ReportPath -Value "<br><h4>Verificação de Segurança</h4><br>Erro ao verificar segurança do sistema." -Encoding UTF8
         }
     } -TimeoutSeconds 300 -ReportPath $ReportPath
 }
@@ -228,10 +228,10 @@ function Collect-Printers {
         if ($printers.Count -gt 0) {
             $printerDetails = $printers | ForEach-Object { "$($_.Name) - $($_.PortName)" }
             if (![string]::IsNullOrEmpty($ReportPath)) {
-                Add-Content -Path $ReportPath -Value "<br><h2>Impressoras Instaladas</h2><br>$($printerDetails -join "<br>")" -Encoding UTF8
+                Add-Content -Path $ReportPath -Value "<br><h4>Impressoras Instaladas</h4><br>$($printerDetails -join "<br>")" -Encoding UTF8
             }
         } else {
-            Add-Content -Path $ReportPath -Value "<br><h2>Impressoras Instaladas</h2><br>Nenhuma impressora instalada." -Encoding UTF8
+            Add-Content -Path $ReportPath -Value "<br><h4>Impressoras Instaladas</h4><br>Nenhuma impressora instalada." -Encoding UTF8
         }
     } -TimeoutSeconds 300 -ReportPath $ReportPath
 }
@@ -248,12 +248,12 @@ function Update-Windows {
         try {
             $hotfixes = Get-HotFix
             if ($hotfixes) {
-                Add-Content -Path $ReportPath -Value "<br><h2>Atualizações do Windows</h2><br>Atualizações listadas com sucesso." -Encoding UTF8
+                Add-Content -Path $ReportPath -Value "<br><h4>Atualizações do Windows</h4><br>Atualizações listadas com sucesso." -Encoding UTF8
             } else {
-                Add-Content -Path $ReportPath -Value "<br><h2>Atualizações do Windows</h2><br>Nenhuma atualização pendente." -Encoding UTF8
+                Add-Content -Path $ReportPath -Value "<br><h4>Atualizações do Windows</h4><br>Nenhuma atualização pendente." -Encoding UTF8
             }
         } catch {
-            Add-Content -Path $ReportPath -Value "<br><h2>Atualizações do Windows</h2><br>Erro ao verificar ou instalar atualizações do Windows." -Encoding UTF8
+            Add-Content -Path $ReportPath -Value "<br><h4>Atualizações do Windows</h4><br>Erro ao verificar ou instalar atualizações do Windows." -Encoding UTF8
         }
     } -TimeoutSeconds 300 -ReportPath $ReportPath
 }
@@ -270,12 +270,12 @@ function Update-Software {
             $wingetProcess = Start-Process -FilePath "winget" -ArgumentList "upgrade --all" -PassThru -Wait
             $exitCode = $wingetProcess.ExitCode
             if ($exitCode -eq 0) {
-                Add-Content -Path $ReportPath -Value "<br><h2>Atualizações de Software</h2><br>Atualização de software concluída com sucesso." -Encoding UTF8
+                Add-Content -Path $ReportPath -Value "<br><h4>Atualizações de Software</h4><br>Atualização de software concluída com sucesso." -Encoding UTF8
             } else {
-                Add-Content -Path $ReportPath -Value "<br><h2>Atualizações de Software</h2><br>Erro ao atualizar software. Código de saída: $exitCode" -Encoding UTF8
+                Add-Content -Path $ReportPath -Value "<br><h4>Atualizações de Software</h4><br>Erro ao atualizar software. Código de saída: $exitCode" -Encoding UTF8
             }
         } catch {
-            Add-Content -Path $ReportPath -Value "<br><h2>Atualizações de Software</h2><br>Erro ao atualizar software." -Encoding UTF8
+            Add-Content -Path $ReportPath -Value "<br><h4>Atualizações de Software</h4><br>Erro ao atualizar software." -Encoding UTF8
         }
     } -TimeoutSeconds 300 -ReportPath $ReportPath
 }
@@ -297,9 +297,9 @@ function Clean-TemporaryFiles {
                 Remove-Item "C:\Windows.old" -Recurse -Force -ErrorAction SilentlyContinue
             }
             Get-EventLog -LogName Application -Newest 1000 | Clear-EventLog
-            Add-Content -Path $ReportPath -Value "<br><h2>Limpeza de Arquivos Temporários</h2><br>Limpeza realizada com sucesso." -Encoding UTF8
+            Add-Content -Path $ReportPath -Value "<br><h4>Limpeza de Arquivos Temporários</h4><br>Limpeza realizada com sucesso." -Encoding UTF8
         } catch {
-            Add-Content -Path $ReportPath -Value "<br><h2>Limpeza de Arquivos Temporários</h2><br>Erro ao realizar limpeza." -Encoding UTF8
+            Add-Content -Path $ReportPath -Value "<br><h4>Limpeza de Arquivos Temporários</h4><br>Erro ao realizar limpeza." -Encoding UTF8
         }
     } -TimeoutSeconds 300 -ReportPath $ReportPath
 }
@@ -322,25 +322,25 @@ function Disk-Maintenance {
                     $scheduleResponse = Read-Host "O volume está em uso. Deseja agendar a verificação para a próxima inicialização? (s/n)"
                     if ($scheduleResponse -eq "s") {
                         chkdsk C: /f /r /x
-                        Add-Content -Path $ReportPath -Value "<br><h2>Manutenção de Disco</h2><br>Verificação agendada para a próxima inicialização." -Encoding UTF8
+                        Add-Content -Path $ReportPath -Value "<br><h4>Manutenção de Disco</h4><br>Verificação agendada para a próxima inicialização." -Encoding UTF8
                     } else {
-                        Add-Content -Path $ReportPath -Value "<br><h2>Manutenção de Disco</h2><br>Verificação de disco não agendada." -Encoding UTF8
+                        Add-Content -Path $ReportPath -Value "<br><h4>Manutenção de Disco</h4><br>Verificação de disco não agendada." -Encoding UTF8
                     }
                 } else {
-                    Add-Content -Path $ReportPath -Value "<br><h2>Manutenção de Disco</h2><br>Verificação de disco realizada com sucesso." -Encoding UTF8
+                    Add-Content -Path $ReportPath -Value "<br><h4>Manutenção de Disco</h4><br>Verificação de disco realizada com sucesso." -Encoding UTF8
                 }
                 defrag C: /O
             } else {
-                Add-Content -Path $ReportPath -Value "<br><h2>Manutenção de Disco</h2><br>Manutenção de HD não realizada." -Encoding UTF8
+                Add-Content -Path $ReportPath -Value "<br><h4>Manutenção de Disco</h4><br>Manutenção de HD não realizada." -Encoding UTF8
             }
         } elseif ($disk.MediaType -eq "SSD") {
             Write-Host "Disco SSD detectado. Executando manutenção específica..." -ForegroundColor Cyan
             $userResponse = Read-Host "Deseja realizar a verificação e manutenção do SSD? (s/n)"
             if ($userResponse -eq "s") {
                 Optimize-Volume -DriveLetter C -ReTrim -Verbose
-                Add-Content -Path $ReportPath -Value "<br><h2>Manutenção de Disco</h2><br>Manutenção de SSD realizada." -Encoding UTF8
+                Add-Content -Path $ReportPath -Value "<br><h4>Manutenção de Disco</h4><br>Manutenção de SSD realizada." -Encoding UTF8
             } else {
-                Add-Content -Path $ReportPath -Value "<br><h2>Manutenção de Disco</h2><br>Manutenção de SSD não realizada." -Encoding UTF8
+                Add-Content -Path $ReportPath -Value "<br><h4>Manutenção de Disco</h4><br>Manutenção de SSD não realizada." -Encoding UTF8
             }
         }
     }
@@ -382,18 +382,18 @@ function Repair-Windows {
                         $scheduleResponse = Read-Host "O volume está em uso. Deseja agendar a verificação para o próximo reinício? (s/n)"
                         if ($scheduleResponse -eq "s") {
                             $scheduleOutput = cmd /c "chkdsk C: /f /r /x" | Out-String
-                            Add-Content -Path $ReportPath -Value "<br><h2>Comando: $($command.Name)</h2><br>Descrição: $($command.Description)<br>Verificação agendada para o próximo reinício.<br>" -Encoding UTF8
+                            Add-Content -Path $ReportPath -Value "<br><h4>Comando: $($command.Name)</h4><br>Descrição: $($command.Description)<br>Verificação agendada para o próximo reinício.<br>" -Encoding UTF8
                             Write-Host "Verificação agendada para o próximo reinício." -ForegroundColor Green
                         } else {
-                            Add-Content -Path $ReportPath -Value "<br><h2>Comando: $($command.Name)</h2><br>Verificação não foi agendada pelo usuário.<br>" -Encoding UTF8
+                            Add-Content -Path $ReportPath -Value "<br><h4>Comando: $($command.Name)</h4><br>Verificação não foi agendada pelo usuário.<br>" -Encoding UTF8
                             Write-Host "Verificação não agendada." -ForegroundColor Yellow
                         }
                     } else {
-                        Add-Content -Path $ReportPath -Value "<br><h2>Comando: $($command.Name)</h2><br>Descrição: $($command.Description)<br>Saída:<br>$output<br>" -Encoding UTF8
+                        Add-Content -Path $ReportPath -Value "<br><h4>Comando: $($command.Name)</h4><br>Descrição: $($command.Description)<br>Saída:<br>$output<br>" -Encoding UTF8
                     }
                 } catch {
                     Write-Host "Erro ao executar o comando: $($command.Name)" -ForegroundColor Red
-                    Add-Content -Path $ReportPath -Value "<br><h2>Comando: $($command.Name)</h2><br>Erro ao executar comando: $_<br>" -Encoding UTF8
+                    Add-Content -Path $ReportPath -Value "<br><h4>Comando: $($command.Name)</h4><br>Erro ao executar comando: $_<br>" -Encoding UTF8
                 }
             } else {
                 try {
@@ -405,16 +405,16 @@ function Repair-Windows {
                     Write-Host $output.Substring(0, [Math]::Min(1000, $output.Length))
 
                     # Adiciona o resultado ao relatório
-                    Add-Content -Path $ReportPath -Value "<br><h2>Comando: $($command.Name)</h2><br>Descrição: $($command.Description)<br>Saída:<br>$output<br>" -Encoding UTF8
+                    Add-Content -Path $ReportPath -Value "<br><h4>Comando: $($command.Name)</h4><br>Descrição: $($command.Description)<br>Saída:<br>$output<br>" -Encoding UTF8
                 } catch {
                     # Em caso de erro, registra no relatório e mostra no console
                     Write-Host "Erro ao executar o comando: $($command.Name)" -ForegroundColor Red
-                    Add-Content -Path $ReportPath -Value "<br><h2>Comando: $($command.Name)</h2><br>Erro ao executar comando: $_<br>" -Encoding UTF8
+                    Add-Content -Path $ReportPath -Value "<br><h4>Comando: $($command.Name)</h4><br>Erro ao executar comando: $_<br>" -Encoding UTF8
                 }
             }
         } else {
             Write-Host "Comando '$($command.Name)' não foi executado." -ForegroundColor Yellow
-            Add-Content -Path $ReportPath -Value "<br><h2>Comando: $($command.Name)</h2><br>Comando não executado pelo usuário.<br>" -Encoding UTF8
+            Add-Content -Path $ReportPath -Value "<br><h4>Comando: $($command.Name)</h4><br>Comando não executado pelo usuário.<br>" -Encoding UTF8
         }
     }
 
@@ -451,7 +451,7 @@ function Organize-Report {
     $executionTime = ($endTime - $startTime).TotalMinutes
     $formattedTime = Format-ExecutionTime -executionTime $executionTime
     if (![string]::IsNullOrEmpty($ReportPath)) {
-        Add-Content -Path $ReportPath -Value "<br><h2>Tempo Total de Execução</h2><br>$formattedTime" -Encoding UTF8
+        Add-Content -Path $ReportPath -Value "<br><h4>Tempo Total de Execução</h4><br>$formattedTime" -Encoding UTF8
     }
     Write-Host "Tempo total de execução: $formattedTime" -ForegroundColor Green
 }
